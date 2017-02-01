@@ -12,7 +12,7 @@ public class ConfigKit {
     
     public static var baseURL = "https://www.localizationkit.com/config/";
     
-    public static func getConfig(str:String, _ completion: @escaping (NSDictionary) -> Swift.Void){
+    public static func getConfig(str:String, _ completion: @escaping (NSDictionary?) -> Swift.Void){
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
         let urlString = "\(baseURL)\(str)"
@@ -25,6 +25,7 @@ public class ConfigKit {
                     completion(json!)
                 } catch {
                     print("error serializing JSON: \(error)")
+                    completion(nil)
                 }
                 
             }
