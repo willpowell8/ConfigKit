@@ -28,6 +28,8 @@ public class ConfigKit {
                     completion(nil)
                 }
                 
+            }else{
+                completion(nil)
             }
             }.resume()
     }
