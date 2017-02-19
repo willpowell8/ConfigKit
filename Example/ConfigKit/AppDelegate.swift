@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ConfigKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        ConfigKit.account = "DEFAULT"
+        ConfigKit.getConfig(str: "89050f20-3b7a-428c-9773-d578a9c58c08") { (err, data) in
+            print("Loaded")
+        }
         return true
     }
 
