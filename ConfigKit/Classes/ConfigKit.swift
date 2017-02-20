@@ -12,12 +12,12 @@ public class ConfigKit {
     
     public static var account:String = ""
     
-    public static var baseURL = "https://y4wsadz8hf.execute-api.eu-west-1.amazonaws.com/ConfigStage/";
+    public static var baseURL = "https://www.localizationkit.com/config/";
     
     public static func getConfig(str:String, _ completion: @escaping (Error?, NSDictionary?) -> Swift.Void){
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
-        let urlString = "\(baseURL)\(account)/\(str)/raw"
+        let urlString = "\(baseURL)\(account)/\(str)"
         let url = URL(string: urlString as String)
         session.dataTask(with: url!) {
             (data, response, error) in
