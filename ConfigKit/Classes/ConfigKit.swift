@@ -11,13 +11,16 @@ import Foundation
 public class ConfigKit {
     
     public static var account:String = ""
+    public static var version:String = ""
     
-    public static var baseURL = "https://www.localizationkit.com/config/";
+    public static var baseURL = "https://y4wsadz8hf.execute-api.eu-west-1.amazonaws.com/ConfigStage/{{account}}/version/{{version}}/document/{{documentId}}/raw";
     
     public static func getConfig(str:String, _ completion: @escaping (Error?, NSDictionary?) -> Swift.Void){
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
-        let urlString = "\(baseURL)\(account)/\(str)"
+        var urlString = baseURL.replacingOccurrences(of: "{{account}}", with: account)
+        urlString = urlString.replacingOccurrences(of: "{{version}}", with: version)
+        urlString = urlString.replacingOccurrences(of: "{{documentId}}", with: str)
         let url = URL(string: urlString as String)
         session.dataTask(with: url!) {
             (data, response, error) in

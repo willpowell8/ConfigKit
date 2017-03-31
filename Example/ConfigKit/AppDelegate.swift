@@ -17,7 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        ConfigKit.account = "DEFAULT"
+        ConfigKit.account = "[[ACCOUNT]]"
+        ConfigKit.version = "[[master]]"
         ConfigKit.getConfig(str: "CONFIG") { (err, data) in
             print("Loaded")
         }
