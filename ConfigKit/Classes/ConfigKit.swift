@@ -18,8 +18,8 @@ public class ConfigKit {
     public static func getConfig(str:String, _ completion: @escaping (Error?, NSDictionary?) -> Swift.Void){
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
-        var urlString = baseURL.replacingOccurrences(of: "{{account}}", with: app)
-        urlString = urlString.replacingOccurrences(of: "{{version}}", with: account)
+        var urlString = baseURL.replacingOccurrences(of: "{{app}}", with: app)
+        urlString = urlString.replacingOccurrences(of: "{{account}}", with: account)
         urlString = urlString.replacingOccurrences(of: "{{documentId}}", with: str)
         let url = URL(string: urlString as String)
         session.dataTask(with: url!) {
