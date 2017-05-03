@@ -27,7 +27,7 @@ public class ConfigKit {
     public static var branch:String = ""
     public static var account:String = ""
     
-    private static var isReachable:Bool = true
+    public static var isReachable:Bool = true
     private static var baseURL = "https://y4wsadz8hf.execute-api.eu-west-1.amazonaws.com/ConfigStage/{{account}}/version/{{branch}}/document/{{documentId}}/raw";
     
     public static func start(branch:String, account:String){
