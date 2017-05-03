@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ConfigKit'
-  s.version          = '0.3.6'
+  s.version          = '0.3.7'
   s.summary          = 'Framework to manage your app configuration'
 
 # This description is used to generate tags and improve search results.
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-Remotely manage your configuration
+Remotely manage your configuration served from a git repository
                        DESC
 
   s.homepage         = 'https://github.com/willpowell8/ConfigKit'
@@ -38,5 +38,6 @@ Remotely manage your configuration
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'ReachabilitySwift', '~> 3'
+  s.dependency 'DictionaryUtils'
 end

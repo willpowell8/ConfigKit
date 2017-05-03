@@ -8,6 +8,7 @@
 
 import UIKit
 import ConfigKit
+import ReachabilitySwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,11 +18,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        ConfigKit.app = "burberry"
-        ConfigKit.account = "master"
-        ConfigKit.getConfig(str: "CONFIG") { (err, data) in
+        
+        let reachability = Reachability()!
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+        ConfigKit.start(branch: "dev", account: "b")
+        ConfigKit.getConfig(str: "CONFIG") { (err, data, source) in
             print("Loaded")
         }
+        
+        
+        let data = ["TEST":["hello":"WELCOME"]]
+        if let output = data.readString(param: "TEST.hello") {
+            print(String(describing:output))
+        }
+        
         return true
     }
 

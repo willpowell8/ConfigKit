@@ -2,10 +2,12 @@ use_frameworks!
 
 target 'ConfigKit_Example' do
   pod 'ConfigKit', :path => '../'
+  pod 'ReachabilitySwift'
 
   target 'ConfigKit_Tests' do
     inherit! :search_paths
 
     pod 'FBSnapshotTestCase'
+    
   end
 end
