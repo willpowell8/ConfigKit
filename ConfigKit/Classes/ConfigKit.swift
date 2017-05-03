@@ -48,7 +48,7 @@ public class ConfigKit {
     
         
     public func getConfig(str:String, _ completion: @escaping (ConfigKitError?, [AnyHashable:Any]?, ConfigKitSource?) -> Swift.Void){
-        var urlString = ConfigKit.baseURL.replacingOccurrences(of: "{{app}}", with: ConfigKit.account)
+        var urlString = ConfigKit.baseURL.replacingOccurrences(of: "{{account}}", with: ConfigKit.account)
         urlString = urlString.replacingOccurrences(of: "{{branch}}", with: ConfigKit.branch)
         urlString = urlString.replacingOccurrences(of: "{{documentId}}", with: str)
         
