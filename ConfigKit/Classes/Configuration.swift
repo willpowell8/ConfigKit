@@ -14,7 +14,7 @@ public class Configuration : NSObject {
     
     public init(data:[String:Any]){
         super.init()
-        self.data = ["TEST":["hello":"WELCOME"]]
+        self.data = data
     }
     
     public func getParam(dictionary:[AnyHashable:Any], param: String) -> Any? {

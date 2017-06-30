@@ -64,8 +64,7 @@ public class ConfigKit {
                         if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [AnyHashable:Any] {
                         
                             if json["error"] != nil || json["errorMessage"] != nil {
-                                print("ERROR")
-                                completion(.responseError, nil, nil)
+                                self.checkOffline(urlString: urlString, onlineError:ConfigKitError.responseError, completion)
                             }else{
                                 if let dataSet = data {
                                     let responseString = String(data: dataSet, encoding: .utf8)
@@ -75,32 +74,39 @@ public class ConfigKit {
                                 completion(nil, json, .online)
                             }
                         }else{
-                            completion(.parseError, nil, nil)
+                            self.checkOffline(urlString: urlString, onlineError:ConfigKitError.parseError, completion)
                         }
                         
                     } catch {
-                        completion(ConfigKitError.parseError,nil, nil)
+                        self.checkOffline(urlString: urlString, onlineError:ConfigKitError.parseError, completion)
                     }
                     
                 }else{
-                    completion(ConfigKitError.serverError, nil, nil)
+                    self.checkOffline(urlString: urlString, onlineError:ConfigKitError.serverError, completion)
                 }
                 }.resume()
         }else{
-            if let string = UserDefaults.standard.string(forKey: urlString) {
-                do {
-                    let data = string.data(using: .utf8)
-                    if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [AnyHashable:Any] {
-                        completion(nil, json, .offline)
-                        return;
-                    }
-                }catch {
+            checkOffline(urlString: urlString, onlineError:nil, completion)
+        }
+    }
+    
+    func checkOffline(urlString:String, onlineError:ConfigKitError?, _ completion: @escaping (ConfigKitError?, [AnyHashable:Any]?, ConfigKitSource?) -> Swift.Void) -> Void{
+        if let string = UserDefaults.standard.string(forKey: urlString) {
+            do {
+                let data = string.data(using: .utf8)
+                if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [AnyHashable:Any] {
+                    completion(onlineError, json, .offline)
+                    return;
+                }else{
                     completion(ConfigKitError.noOfflineData, nil, nil)
                     return
                 }
+            }catch {
+                completion(ConfigKitError.noOfflineData, nil, nil)
+                return
             }
-            
-            completion(ConfigKitError.noOfflineData, nil, nil)
         }
+        
+        completion(ConfigKitError.noOfflineData, nil, nil)
     }
 }
