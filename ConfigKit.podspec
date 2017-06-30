@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ConfigKit'
-  s.version          = '0.4.0'
+  s.version          = '0.4.1'
   s.summary          = 'Framework to manage your app configuration'
 
 # This description is used to generate tags and improve search results.
@@ -26,7 +26,7 @@ Remotely manage your configuration served from a git repository
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Will Powell' => 'willpowell8@gmail.com' }
   s.source           = { :git => 'https://github.com/willpowell8/ConfigKit.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.social_media_url = 'https://twitter.com/willpowelluk'
 
   s.ios.deployment_target = '8.0'
 

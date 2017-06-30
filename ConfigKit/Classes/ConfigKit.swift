@@ -63,7 +63,7 @@ public class ConfigKit {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [AnyHashable:Any] {
                         
-                            if json["error"] != nil {
+                            if json["error"] != nil || json["errorMessage"] != nil {
                                 print("ERROR")
                                 completion(.responseError, nil, nil)
                             }else{
