@@ -20,6 +20,12 @@ it, simply add the following line to your Podfile:
 pod "ConfigKit"
 ```
 
+You can add the parameters to info plist
+
+CONFIG_FIXED = YES
+CONFIG_ACCOUNT = "ACCOUNT NAME"
+CONFIG_BRANCH = "BRANCH NAME"
+
 ## Author
 
 Will Powell, willpowell8@gmail.com

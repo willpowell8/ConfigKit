@@ -24,6 +24,7 @@ public enum ConfigKitSource: String {
 public class ConfigKit {
     
     public static var instance = ConfigKit()
+    public static var isFixed:Bool = true
     public static var branch:String = ""
     public static var account:String = ""
     
@@ -44,6 +45,32 @@ public class ConfigKit {
     
     public static func getConfig(str:String, _ completion: @escaping (ConfigKitError?, [AnyHashable:Any]?, ConfigKitSource?) -> Swift.Void){
         instance.getConfig(str: str, completion)
+    }
+    
+    public static func startFromPlist()->Bool{
+        //get the path of the plist file
+        guard let plistPath = Bundle.main.path(forResource: "Info", ofType: "plist") else { return false }
+        //load the plist as data in memory
+        guard let plistData = FileManager.default.contents(atPath: plistPath) else { return false }
+        //use the format of a property list (xml)
+        var format = PropertyListSerialization.PropertyListFormat.xml
+        //convert the plist data to a Swift Dictionary
+        guard let  plistDict = try! PropertyListSerialization.propertyList(from: plistData, options: .mutableContainersAndLeaves, format: &format) as? [String : AnyObject] else { return false }
+        //access the values in the dictionary
+        if let value = plistDict["CONFIG_FIXED"] as? Bool, value == true {
+            self.isFixed = true
+            if let acc = plistDict["CONFIG_ACCOUNT"] as? String{
+                account = acc
+            }
+            if let bra = plistDict["CONFIG_BRANCH"] as? String{
+                branch = bra
+            }
+            NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged),name: ReachabilityChangedNotification,object: nil)
+            return true
+        }else{
+            return false
+        }
+        
     }
     
         

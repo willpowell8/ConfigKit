@@ -26,8 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             print("Unable to start notifier")
         }
-        ConfigKit.start(branch: "dev", account: "b")
-        ConfigKit.getConfig(str: "CONFIG") { (err, data, source) in
+        if ConfigKit.startFromPlist() == false {
+            ConfigKit.start(branch: "dev", account: "b")
+        }
+        ConfigKit.getConfig(str: "SETUP") { (err, data, source) in
             print("Loaded")
         }
         
