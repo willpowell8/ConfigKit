@@ -24,7 +24,7 @@ public enum ConfigKitSource: String {
 public class ConfigKit {
     
     public static var instance = ConfigKit()
-    public static var isFixed:Bool = true
+    public static var isFixed:Bool = false
     public static var branch:String = ""
     public static var account:String = ""
     
