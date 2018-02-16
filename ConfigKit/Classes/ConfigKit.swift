@@ -27,6 +27,7 @@ public class ConfigKit {
     public static var isFixed:Bool = false
     public static var branch:String = ""
     public static var account:String = ""
+    public static var mode:String = "STANDARD"
     
     public static var isReachable:Bool = true
     private static var baseURL = "https://y4wsadz8hf.execute-api.eu-west-1.amazonaws.com/ConfigStage/{{account}}/version/{{branch}}/document/{{documentId}}/raw";
@@ -78,7 +79,7 @@ public class ConfigKit {
         var urlString = ConfigKit.baseURL.replacingOccurrences(of: "{{account}}", with: ConfigKit.account)
         urlString = urlString.replacingOccurrences(of: "{{branch}}", with: ConfigKit.branch)
         urlString = urlString.replacingOccurrences(of: "{{documentId}}", with: str)
-        
+        urlString += "?mode=" + ConfigKit.mode
         if ConfigKit.isReachable == true {
             // App registered as online
             let config = URLSessionConfiguration.default
