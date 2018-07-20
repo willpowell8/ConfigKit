@@ -36,7 +36,9 @@ public class ConfigKit {
     public static var mode:ConfigKitMode = .standard
     
     public static var isReachable:Bool = true
-    private static var baseURL = "https://y4wsadz8hf.execute-api.eu-west-1.amazonaws.com/ConfigStage/{{account}}/version/{{branch}}/document/{{documentId}}/raw";
+    private static var baseURL = "https://y4wsadz8hf.execute-api.eu-west-1.amazonaws.com/ConfigStage/{{account}}/version/{{branch}}/document/{{documentId}}/raw"
+    public static var check:Bool = true
+    public static var checkField:String = "signature"
     
     public static func start(branch:String, account:String){
         self.branch = branch
@@ -82,41 +84,61 @@ public class ConfigKit {
     
         
     public func getConfig(str:String, _ completion: @escaping (ConfigKitError?, [AnyHashable:Any]?, ConfigKitSource?) -> Swift.Void){
+        var checkVal = ""
         var urlString = ConfigKit.baseURL.replacingOccurrences(of: "{{account}}", with: ConfigKit.account)
         urlString = urlString.replacingOccurrences(of: "{{branch}}", with: ConfigKit.branch)
         urlString = urlString.replacingOccurrences(of: "{{documentId}}", with: str)
         urlString += "?mode=" + ConfigKit.mode.rawValue
+        #if DEBUG
+            urlString += "&debug=true"
+        #else
+        if ConfigKit.check {
+            checkVal = checkStr(20)
+            urlString += "&\(ConfigKit.checkField)=\(checkVal)"
+        }
+        #endif
         if ConfigKit.isReachable == true {
             // App registered as online
             let config = URLSessionConfiguration.default
             let session = URLSession(configuration: config)
-            let url = URL(string: urlString as String)
-            session.dataTask(with: url!) {
+            guard let url = URL(string: urlString) else {
+                print("URL Incorrectly formatted")
+                return
+            }
+            session.dataTask(with: url) {
                 (data, response, error) in
-                if (response as? HTTPURLResponse) != nil {
-                    do {
-                        if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [AnyHashable:Any] {
-                        
-                            if json["error"] != nil || json["errorMessage"] != nil {
-                                self.checkOffline(urlString: urlString, onlineError:ConfigKitError.responseError, completion)
-                            }else{
-                                if let dataSet = data {
-                                    let responseString = String(data: dataSet, encoding: .utf8)
-                                    UserDefaults.standard.set(responseString, forKey: urlString)
-                                    UserDefaults.standard.synchronize()
-                                }
-                                completion(nil, json, .online)
-                            }
-                        }else{
-                            self.checkOffline(urlString: urlString, onlineError:ConfigKitError.parseError, completion)
-                        }
-                        
-                    } catch {
+                guard  (response as? HTTPURLResponse) != nil else {
+                    self.checkOffline(urlString: urlString, onlineError:ConfigKitError.serverError, completion)
+                    return
+                }
+                do {
+                    guard let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [AnyHashable:Any] else {
                         self.checkOffline(urlString: urlString, onlineError:ConfigKitError.parseError, completion)
+                        return
+                    }
+                    if json["error"] != nil || json["errorMessage"] != nil {
+                        self.checkOffline(urlString: urlString, onlineError:ConfigKitError.responseError, completion)
+                        return
                     }
                     
-                }else{
-                    self.checkOffline(urlString: urlString, onlineError:ConfigKitError.serverError, completion)
+                    if checkVal != "" {
+                        if let checkVal2 = json[ConfigKit.checkField] as? String, checkVal2 == checkVal {
+                            
+                        }else{
+                            self.checkOffline(urlString: urlString, onlineError:ConfigKitError.responseError, completion)
+                            return
+                        }
+                    }
+                    
+                    if let dataSet = data {
+                        let responseString = String(data: dataSet, encoding: .utf8)
+                        UserDefaults.standard.set(responseString, forKey: urlString)
+                        UserDefaults.standard.synchronize()
+                    }
+                    completion(nil, json, .online)
+                    
+                } catch {
+                    self.checkOffline(urlString: urlString, onlineError:ConfigKitError.parseError, completion)
                 }
                 }.resume()
         }else{
@@ -142,5 +164,21 @@ public class ConfigKit {
         }
         
         completion(ConfigKitError.noOfflineData, nil, nil)
+    }
+    
+    func checkStr(_ length: Int) -> String {
+        
+        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let len = UInt32(letters.length)
+        
+        var randomString = ""
+        
+        for _ in 0 ..< length {
+            let rand = arc4random_uniform(len)
+            var nextChar = letters.character(at: Int(rand))
+            randomString += NSString(characters: &nextChar, length: 1) as String
+        }
+        
+        return randomString
     }
 }

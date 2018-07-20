@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if ConfigKit.startFromPlist() == false {
             ConfigKit.start(branch: "dev", account: "b")
         }
-        ConfigKit.getConfig(str: "SETUP") { (err, data, source) in
+        ConfigKit.getConfig(str: "compile") { (err, data, source) in
             print("Loaded")
         }
         
