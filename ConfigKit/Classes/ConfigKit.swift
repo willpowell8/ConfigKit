@@ -107,12 +107,12 @@ public class ConfigKit {
             }
             session.dataTask(with: url) {
                 (data, response, error) in
-                guard  (response as? HTTPURLResponse) != nil else {
+                guard let data = data, (response as? HTTPURLResponse) != nil else {
                     self.checkOffline(urlString: urlString, onlineError:ConfigKitError.serverError, completion)
                     return
                 }
                 do {
-                    guard let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [AnyHashable:Any] else {
+                    guard let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyHashable:Any] else {
                         self.checkOffline(urlString: urlString, onlineError:ConfigKitError.parseError, completion)
                         return
                     }
@@ -130,11 +130,9 @@ public class ConfigKit {
                         }
                     }
                     
-                    if let dataSet = data {
-                        let responseString = String(data: dataSet, encoding: .utf8)
-                        UserDefaults.standard.set(responseString, forKey: urlString)
-                        UserDefaults.standard.synchronize()
-                    }
+                    let responseString = String(data: data, encoding: .utf8)
+                    UserDefaults.standard.set(responseString, forKey: urlString)
+                    UserDefaults.standard.synchronize()
                     completion(nil, json, .online)
                     
                 } catch {
