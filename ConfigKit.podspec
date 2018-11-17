@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ConfigKit'
-  s.version          = '0.4.7'
+  s.version          = '0.4.8'
   s.summary          = 'Framework to manage your app configuration'
 
 # This description is used to generate tags and improve search results.
@@ -29,6 +29,7 @@ Remotely manage your configuration served from a git repository
   s.social_media_url = 'https://twitter.com/willpowelluk'
 
   s.ios.deployment_target = '8.0'
+    s.swift_version = '4.2'
 
   s.source_files = 'ConfigKit/Classes/**/*'
   
@@ -39,5 +40,4 @@ Remotely manage your configuration served from a git repository
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   s.dependency 'ReachabilitySwift', '~> 3'
-  s.dependency 'DictionaryUtils'
 end

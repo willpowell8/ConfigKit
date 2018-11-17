@@ -9,6 +9,7 @@
 import UIKit
 import ConfigKit
 import ReachabilitySwift
+import DictionaryUtils
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -35,8 +36,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         let data = ["TEST":["hello":"WELCOME"]]
-        if let output = data.readString(param: "TEST.hello") {
-            print(String(describing:output))
+        do{
+            if let output = try data.read("TEST.hello") {
+                print(String(describing:output))
+            }
+        }catch{
+            print("error Parsing")
         }
         
         return true
