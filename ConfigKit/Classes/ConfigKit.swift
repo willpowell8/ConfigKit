@@ -88,6 +88,7 @@ public class ConfigKit {
         var urlString = ConfigKit.baseURL.replacingOccurrences(of: "{{account}}", with: ConfigKit.account)
         urlString = urlString.replacingOccurrences(of: "{{branch}}", with: ConfigKit.branch)
         urlString = urlString.replacingOccurrences(of: "{{documentId}}", with: str)
+        let matchedString = "\(urlString)"
         urlString += "?mode=" + ConfigKit.mode.rawValue
         #if DEBUG
             urlString += "&debug=true"
@@ -108,16 +109,16 @@ public class ConfigKit {
             session.dataTask(with: url) {
                 (data, response, error) in
                 guard let data = data, (response as? HTTPURLResponse) != nil else {
-                    self.checkOffline(urlString: urlString, onlineError:ConfigKitError.serverError, completion)
+                    self.checkOffline(urlString: matchedString, onlineError:ConfigKitError.serverError, completion)
                     return
                 }
                 do {
                     guard let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyHashable:Any] else {
-                        self.checkOffline(urlString: urlString, onlineError:ConfigKitError.parseError, completion)
+                        self.checkOffline(urlString: matchedString, onlineError:ConfigKitError.parseError, completion)
                         return
                     }
                     if json["error"] != nil || json["errorMessage"] != nil {
-                        self.checkOffline(urlString: urlString, onlineError:ConfigKitError.responseError, completion)
+                        self.checkOffline(urlString: matchedString, onlineError:ConfigKitError.responseError, completion)
                         return
                     }
                     
@@ -125,22 +126,22 @@ public class ConfigKit {
                         if let checkVal2 = json[ConfigKit.checkField] as? String, checkVal2 == checkVal {
                             
                         }else{
-                            self.checkOffline(urlString: urlString, onlineError:ConfigKitError.responseError, completion)
+                            self.checkOffline(urlString: matchedString, onlineError:ConfigKitError.responseError, completion)
                             return
                         }
                     }
                     
                     let responseString = String(data: data, encoding: .utf8)
-                    UserDefaults.standard.set(responseString, forKey: urlString)
+                    UserDefaults.standard.set(responseString, forKey: matchedString)
                     UserDefaults.standard.synchronize()
                     completion(nil, json, .online)
                     
                 } catch {
-                    self.checkOffline(urlString: urlString, onlineError:ConfigKitError.parseError, completion)
+                    self.checkOffline(urlString: matchedString, onlineError:ConfigKitError.parseError, completion)
                 }
                 }.resume()
         }else{
-            checkOffline(urlString: urlString, onlineError:nil, completion)
+            checkOffline(urlString: matchedString, onlineError:nil, completion)
         }
     }
     

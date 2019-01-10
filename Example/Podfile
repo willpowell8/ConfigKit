@@ -2,8 +2,8 @@ use_frameworks!
 
 target 'ConfigKit_Example' do
   pod 'ConfigKit', :path => '../'
-  pod 'ReachabilitySwift'
-  pod 'DictionaryUtils'
+  pod 'ReachabilitySwift', :inhibit_warnings => true
+  pod 'DictionaryUtils', :inhibit_warnings => true
 
   target 'ConfigKit_Tests' do
     inherit! :search_paths
