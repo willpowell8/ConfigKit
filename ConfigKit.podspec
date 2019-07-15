@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ConfigKit'
-  s.version          = '0.4.10'
+  s.version          = '5.0.0'
   s.summary          = 'Framework to manage your app configuration'
 
 # This description is used to generate tags and improve search results.

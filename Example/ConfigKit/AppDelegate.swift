@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         let reachability = Reachability()!
@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Unable to start notifier")
         }
         if ConfigKit.startFromPlist() == false {
-            ConfigKit.start(branch: "dev", account: "b")
+            ConfigKit.start(branch: "demo", account: "b")
         }
         ConfigKit.getConfig(str: "compile") { (err, data, source) in
             print("Loaded")

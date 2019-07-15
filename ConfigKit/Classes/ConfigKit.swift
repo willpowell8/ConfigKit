@@ -13,6 +13,7 @@ public enum ConfigKitError: String, Error {
     case serverError = "Server Comms Error"
     case responseError = "Response Error"
     case parseError = "Parse Error"
+    case invalidURL = "Invalid URL"
     case noOfflineData = "No Offline Data"
 }
 
@@ -85,8 +86,16 @@ public class ConfigKit {
         
     public func getConfig(str:String, _ completion: @escaping (ConfigKitError?, [AnyHashable:Any]?, ConfigKitSource?) -> Swift.Void){
         var checkVal = ""
-        var urlString = ConfigKit.baseURL.replacingOccurrences(of: "{{account}}", with: ConfigKit.account)
-        urlString = urlString.replacingOccurrences(of: "{{branch}}", with: ConfigKit.branch)
+        guard let account = ConfigKit.account.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
+            completion(.invalidURL, nil, nil)
+            return
+        }
+        guard let branch = ConfigKit.branch.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
+            completion(.invalidURL, nil, nil)
+            return
+        }
+        var urlString = ConfigKit.baseURL.replacingOccurrences(of: "{{account}}", with: account)
+        urlString = urlString.replacingOccurrences(of: "{{branch}}", with: branch)
         urlString = urlString.replacingOccurrences(of: "{{documentId}}", with: str)
         let matchedString = "\(urlString)"
         urlString += "?mode=" + ConfigKit.mode.rawValue
@@ -104,6 +113,7 @@ public class ConfigKit {
             let session = URLSession(configuration: config)
             guard let url = URL(string: urlString) else {
                 print("URL Incorrectly formatted")
+                completion(.invalidURL, nil, nil)
                 return
             }
             session.dataTask(with: url) {
