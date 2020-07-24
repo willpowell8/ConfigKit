@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReachabilitySwift
+import Reachability
 
 public enum ConfigKitError: String, Error {
     case serverError = "Server Comms Error"
@@ -45,7 +45,7 @@ public class ConfigKit {
         self.branch = branch
         self.account = account
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged),name: ReachabilityChangedNotification,object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged),name: Notification.Name.reachabilityChanged,object: nil)
     }
     
     @objc private static func reachabilityChanged(note: NSNotification) {
@@ -75,7 +75,7 @@ public class ConfigKit {
             if let bra = plistDict["CONFIG_BRANCH"] as? String{
                 branch = bra
             }
-            NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged),name: ReachabilityChangedNotification,object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged),name: Notification.Name.reachabilityChanged,object: nil)
             return true
         }else{
             return false

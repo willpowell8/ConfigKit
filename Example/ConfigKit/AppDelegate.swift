@@ -8,7 +8,7 @@
 
 import UIKit
 import ConfigKit
-import ReachabilitySwift
+import Reachability
 import DictionaryUtils
 
 @UIApplicationMain
@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        let reachability = Reachability()!
+        let reachability = try! Reachability()
         
         do {
             try reachability.startNotifier()

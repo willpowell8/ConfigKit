@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ConfigKit'
-  s.version          = '5.0.0'
+  s.version          = '5.0.1'
   s.summary          = 'Framework to manage your app configuration'
 
 # This description is used to generate tags and improve search results.
@@ -28,8 +28,7 @@ Remotely manage your configuration served from a git repository
   s.source           = { :git => 'https://github.com/willpowell8/ConfigKit.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/willpowelluk'
 
-  s.ios.deployment_target = '8.0'
-  s.tvos.deployment_target = '9.0'
+  s.ios.deployment_target = '9.0'
   s.osx.deployment_target = '10.9'
   s.swift_version = '4.2'
 
@@ -41,5 +40,5 @@ Remotely manage your configuration served from a git repository
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'ReachabilitySwift', '~> 3'
+  s.dependency 'ReachabilitySwift', '5.0'
 end

@@ -8,7 +8,6 @@ target 'ConfigKit_Example' do
   target 'ConfigKit_Tests' do
     inherit! :search_paths
     
-    pod 'FBSnapshotTestCase'
     
   end
 end
