@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ConfigKit'
-  s.version          = '5.0.1'
+  s.version          = '5.0.2'
   s.summary          = 'Framework to manage your app configuration'
 
 # This description is used to generate tags and improve search results.
@@ -29,7 +29,7 @@ Remotely manage your configuration served from a git repository
   s.social_media_url = 'https://twitter.com/willpowelluk'
 
   s.ios.deployment_target = '9.0'
-  s.osx.deployment_target = '10.9'
+  s.osx.deployment_target = '10.10'
   s.swift_version = '4.2'
 
   s.source_files = 'ConfigKit/Classes/**/*'
